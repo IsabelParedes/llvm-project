@@ -51,8 +51,8 @@ RT_API_ATTRS void CopyElement(const Descriptor &to, const SubscriptValue toAt[],
           SubscriptValue extents[maxRank];
           const typeInfo::Value *bounds{component->bounds()};
           for (int dim{0}; dim < component->rank(); ++dim) {
-            SubscriptValue lb{bounds[2 * dim].GetValue(&to).value_or(0)};
-            SubscriptValue ub{bounds[2 * dim + 1].GetValue(&to).value_or(0)};
+            SubscriptValue lb = bounds[2 * dim].GetValue(&to).value_or(0);
+            SubscriptValue ub = bounds[2 * dim + 1].GetValue(&to).value_or(0);
             extents[dim] = ub >= lb ? ub - lb + 1 : 0;
           }
           const typeInfo::DerivedType &compType{*component->derivedType()};

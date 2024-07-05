@@ -103,7 +103,7 @@ append(${NO_LTO_FLAGS} CMAKE_CXX_FLAGS)
 add_definitions(-U_GLIBCXX_ASSERTIONS)
 add_definitions(-U_LIBCPP_ENABLE_ASSERTIONS)
 
-add_subdirectory(Float128Math)
+#add_subdirectory(Float128Math)
 
 set(sources
   ISO_Fortran_binding.cpp
@@ -229,28 +229,28 @@ set(supported_files
 enable_cuda_compilation(FortranRuntime "${supported_files}")
 enable_omp_offload_compilation("${supported_files}")
 
-if (NOT TARGET FortranFloat128Math)
-  # If FortranFloat128Math is not defined, then we are not building
-  # standalone FortranFloat128Math library. Instead, include
-  # the relevant sources into FortranRuntime itself.
-  # The information is provided via FortranFloat128MathILib
-  # interface library.
-  get_target_property(f128_sources
-    FortranFloat128MathILib INTERFACE_SOURCES
-    )
-  if (f128_sources)
-    # The interface may define special macros for Float128Math files,
-    # so we need to propagate them.
-    get_target_property(f128_defs
-      FortranFloat128MathILib INTERFACE_COMPILE_DEFINITIONS
-      )
-    set_property(SOURCE ${f128_sources}
-      APPEND PROPERTY COMPILE_DEFINITIONS
-      ${f128_defs}
-      )
-    list(APPEND sources ${f128_sources})
-  endif()
-endif()
+#if (NOT TARGET FortranFloat128Math)
+#  # If FortranFloat128Math is not defined, then we are not building
+#  # standalone FortranFloat128Math library. Instead, include
+#  # the relevant sources into FortranRuntime itself.
+#  # The information is provided via FortranFloat128MathILib
+#  # interface library.
+#  get_target_property(f128_sources
+#    FortranFloat128MathILib INTERFACE_SOURCES
+#    )
+#  if (f128_sources)
+#    # The interface may define special macros for Float128Math files,
+#    # so we need to propagate them.
+#    get_target_property(f128_defs
+#      FortranFloat128MathILib INTERFACE_COMPILE_DEFINITIONS
+#      )
+#    set_property(SOURCE ${f128_sources}
+#      APPEND PROPERTY COMPILE_DEFINITIONS
+#      ${f128_defs}
+#      )
+#    list(APPEND sources ${f128_sources})
+#  endif()
+#endif()
 
 if (NOT DEFINED MSVC)
   add_flang_library(FortranRuntime
