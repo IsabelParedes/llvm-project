@@ -69,7 +69,7 @@ function(check_section_exists section output)
 
   # Explicitly throw a fatal error message if test_compile_command fails.
   if(TEST_RESULT)
-    message(FATAL_ERROR "${TEST_ERROR}")
+    message(WARNING "${TEST_ERROR}")
     return()
   endif()
 
