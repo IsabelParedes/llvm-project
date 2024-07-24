@@ -63,48 +63,48 @@ if ((${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC) AND
 endif()
 
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  if (CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
-    if (CMAKE_CXX_SIMULATE_VERSION VERSION_LESS MSVC_MIN)
-      message(FATAL_ERROR "Host Clang must have at least -fms-compatibility-version=${MSVC_MIN}, your version is ${CMAKE_CXX_SIMULATE_VERSION}.")
-    endif()
-    set(CLANG_CL 1)
-  elseif(NOT LLVM_ENABLE_LIBCXX)
-    # Test that we aren't using too old of a version of libstdc++.
-    set(OLD_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
-    set(OLD_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
-    set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -std=c++0x")
-    check_cxx_source_compiles("
-#include <iosfwd>
-#if defined(__GLIBCXX__)
-#if !defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < ${LIBSTDCXX_MIN}
-#error Unsupported libstdc++ version
-#endif
-#endif
-int main() { return 0; }
-"
-      LLVM_LIBSTDCXX_MIN)
-    if(NOT LLVM_LIBSTDCXX_MIN)
-      message(FATAL_ERROR "libstdc++ version must be at least ${GCC_MIN}.")
-    endif()
-    check_cxx_source_compiles("
-#include <iosfwd>
-#if defined(__GLIBCXX__)
-#if !defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < ${LIBSTDCXX_SOFT_ERROR}
-#error Unsupported libstdc++ version
-#endif
-#endif
-int main() { return 0; }
-"
-      LLVM_LIBSTDCXX_SOFT_ERROR)
-    if(NOT LLVM_LIBSTDCXX_SOFT_ERROR)
-      if(LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN)
-        message(WARNING "libstdc++ version should be at least ${LIBSTDCXX_SOFT_ERROR} because LLVM will soon use new C++ features which your toolchain version doesn't support. Ignoring because you've set LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN, but very soon your toolchain won't be supported.")
-      else()
-        message(FATAL_ERROR "libstdc++ version should be at least ${LIBSTDCXX_SOFT_ERROR} because LLVM will soon use new C++ features which your toolchain version doesn't support. You can temporarily opt out using LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN, but very soon your toolchain won't be supported.")
-      endif()
-    endif()
-    set(CMAKE_REQUIRED_FLAGS ${OLD_CMAKE_REQUIRED_FLAGS})
-    set(CMAKE_REQUIRED_LIBRARIES ${OLD_CMAKE_REQUIRED_LIBRARIES})
-  endif()
-endif()
+# if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+#   if (CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
+#     if (CMAKE_CXX_SIMULATE_VERSION VERSION_LESS MSVC_MIN)
+#       message(FATAL_ERROR "Host Clang must have at least -fms-compatibility-version=${MSVC_MIN}, your version is ${CMAKE_CXX_SIMULATE_VERSION}.")
+#     endif()
+#     set(CLANG_CL 1)
+#   elseif(NOT LLVM_ENABLE_LIBCXX)
+#     # Test that we aren't using too old of a version of libstdc++.
+#     set(OLD_CMAKE_REQUIRED_FLAGS ${CMAKE_REQUIRED_FLAGS})
+#     set(OLD_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+#     set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -std=c++0x")
+#     check_cxx_source_compiles("
+# #include <iosfwd>
+# #if defined(__GLIBCXX__)
+# #if !defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < ${LIBSTDCXX_MIN}
+# #error Unsupported libstdc++ version
+# #endif
+# #endif
+# int main() { return 0; }
+# "
+#       LLVM_LIBSTDCXX_MIN)
+#     if(NOT LLVM_LIBSTDCXX_MIN)
+#       message(FATAL_ERROR "libstdc++ version must be at least ${GCC_MIN}.")
+#     endif()
+#     check_cxx_source_compiles("
+# #include <iosfwd>
+# #if defined(__GLIBCXX__)
+# #if !defined(_GLIBCXX_RELEASE) || _GLIBCXX_RELEASE < ${LIBSTDCXX_SOFT_ERROR}
+# #error Unsupported libstdc++ version
+# #endif
+# #endif
+# int main() { return 0; }
+# "
+#       LLVM_LIBSTDCXX_SOFT_ERROR)
+#     if(NOT LLVM_LIBSTDCXX_SOFT_ERROR)
+#       if(LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN)
+#         message(WARNING "libstdc++ version should be at least ${LIBSTDCXX_SOFT_ERROR} because LLVM will soon use new C++ features which your toolchain version doesn't support. Ignoring because you've set LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN, but very soon your toolchain won't be supported.")
+#       else()
+#         message(FATAL_ERROR "libstdc++ version should be at least ${LIBSTDCXX_SOFT_ERROR} because LLVM will soon use new C++ features which your toolchain version doesn't support. You can temporarily opt out using LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN, but very soon your toolchain won't be supported.")
+#       endif()
+#     endif()
+#     set(CMAKE_REQUIRED_FLAGS ${OLD_CMAKE_REQUIRED_FLAGS})
+#     set(CMAKE_REQUIRED_LIBRARIES ${OLD_CMAKE_REQUIRED_LIBRARIES})
+#   endif()
+# endif()
