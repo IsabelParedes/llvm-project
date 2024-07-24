@@ -21,6 +21,8 @@
 #ifndef FORTRAN_RUNTIME_REDUCTION_TEMPLATES_H_
 #define FORTRAN_RUNTIME_REDUCTION_TEMPLATES_H_
 
+#pragma clang diagnostic ignored "-Wmissing-template-arg-list-after-template-kw"
+
 #include "terminator.h"
 #include "tools.h"
 #include "flang/Runtime/cpp-type.h"
