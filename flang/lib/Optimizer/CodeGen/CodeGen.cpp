@@ -1190,10 +1190,9 @@ struct AllocMemOpConversion : public fir::FIROpConversion<fir::AllocMemOp> {
         rewriter, loc, mlir::LLVM::ICmpPredicate::sgt, size, zero);
     size = mlir::LLVM::SelectOp::create(rewriter, loc, cmp, size, one);
 
-    auto mallocTyWidth = lowerTy().getIndexTypeBitwidth();
-    auto mallocTy =
-        mlir::IntegerType::get(rewriter.getContext(), mallocTyWidth);
-    if (mallocTyWidth != ity.getIntOrFloatBitWidth())
+    auto mallocTy = mlir::IntegerType::get(rewriter.getContext(),
+                                           8 * FLANG_TARGET_SIZEOF_SIZE_T);
+    if (mallocTy.getIntOrFloatBitWidth() != ity.getIntOrFloatBitWidth())
       size = integerCast(loc, rewriter, mallocTy, size);
     heap->setAttr("callee", getMalloc(heap, rewriter, mallocTy));
     rewriter.replaceOpWithNewOp<mlir::LLVM::CallOp>(
