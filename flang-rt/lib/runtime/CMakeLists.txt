@@ -152,9 +152,9 @@ file(GLOB_RECURSE private_headers
 
 
 # Import changes from flang_rt.quadmath
-get_target_property(f128_sources
-  FortranFloat128MathILib INTERFACE_SOURCES
-  )
+# get_target_property(f128_sources
+#   FortranFloat128MathILib INTERFACE_SOURCES
+#   )
 if (f128_sources)
   # The interface may define special macros for Float128Math files,
   # so we need to propagate them.

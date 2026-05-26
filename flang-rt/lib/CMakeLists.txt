@@ -6,7 +6,8 @@
 #
 #===------------------------------------------------------------------------===#
 
-add_subdirectory(quadmath)
+# add_subdirectory(quadmath)
+add_library(FortranFloat128MathILib INTERFACE)
 add_subdirectory(runtime)
 if (FLANG_RT_INCLUDE_CUF)
   add_subdirectory(cuda)
